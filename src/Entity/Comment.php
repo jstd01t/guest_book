@@ -99,7 +99,7 @@ class Comment
     #[ORM\PrePersist]
     public function setCreatedAtValue()
     {
-        $this->createdAt = new \DataTimeImmutable;
+        $this->createdAt = new \DateTimeImmutable;
     }
 
     public function getConference(): ?Conference
