@@ -13,6 +13,7 @@ use Twig\Environment;
 use App\Entity\Comment;
 use App\Form\CommentFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class ConferenceController extends AbstractController
 {
@@ -34,13 +35,22 @@ class ConferenceController extends AbstractController
     }
 
     #[Route('conference/{slug}', name: 'conference')]
-    public function show(Request $request, Conference $conference, CommentRepository $commentRepository, ConferenceRepository $conferenceRepository): Response
+    public function show(Request $request, Conference $conference, CommentRepository $commentRepository, ConferenceRepository $conferenceRepository, string $photoDir): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setConference($conference);
+            if ($photo = $form['photo']->getData()) {
+                $filename = bin2hex(random_bytes(6)).'.'.$photo->guessExtension();
+                try{
+                    $photo->move($photoDir, $filename);
+                } catch (FileException $e) {
+                    //unable to upload the photo, give up
+                }
+                $comment->setPhotoFilename($filename);
+            }
 
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
