@@ -38,7 +38,7 @@ class ConferenceControllerTest extends WebTestCase
             'comment_form[author]' => 'Bob',
             'comment_form[text]' => 'Some feedback from an automated functional test',
             'comment_form[email]' => 'me@automat.ed',
-            'comment_form[photo]' => dirname(__DIR__, 2) . '/public/images/linux.png',
+            'comment_form[photo]' => dirname(__DIR__, 2). '/public/images/linux.png',
         ]);
         $this->assertResponseRedirects();
         $client->followRedirect();
