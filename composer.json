@@ -96,7 +96,8 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "6.0.*"
+            "require": "6.0.*",
+            "docker": true
         }
     },
     "require-dev": {
@@ -107,6 +108,7 @@
         "symfony/css-selector": "6.0.*",
         "symfony/debug-bundle": "6.0.*",
         "symfony/maker-bundle": "^1.0",
+        "symfony/panther": "^2.0",
         "symfony/phpunit-bridge": "^6.0",
         "symfony/stopwatch": "6.0.*",
         "symfony/web-profiler-bundle": "6.0.*"
