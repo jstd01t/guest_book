@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Comment;
@@ -9,8 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Twig\Environment;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Workflow\Registry;
+use Twig\Environment;
 
 class AdminController extends AbstractController
 {
@@ -35,9 +35,10 @@ class AdminController extends AbstractController
             $transition = $accepted ? 'publish' : 'reject';
         } elseif ($machine->can($comment, 'publish_ham')) {
             $transition = $accepted ? 'publish_ham' : 'reject_ham';
-        }else{
+        } else {
             return new Response('Comment already reviewed or not in the right state.');
         }
+
         $machine->apply($comment, $transition);
         $this->entityManager->flush();
 
