@@ -15,3 +15,6 @@ Symfony 6: The Fast Track
 - Purging the HTTP Cache for Testing:
   - curl -s -I -X PURGE -u admin:admin `symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL`/admin/http-cache/;
   - curl -s -I -X PURGE -u admin:admin `symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL`/admin/http-cache/conference_header;
+- this command defined to display the Git tag name attached to the current Git commit:
+  - 'app:step:info';
+- 
