@@ -12,3 +12,6 @@ Symfony 6: The Fast Track
 - to run the phpunit tests:
     - $ make tests;
     - run a test server: $ APP_ENV=test symfony server:start -d;
+- Purging the HTTP Cache for Testing:
+  - curl -s -I -X PURGE -u admin:admin `symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL`/admin/http-cache/;
+  - curl -s -I -X PURGE -u admin:admin `symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL`/admin/http-cache/conference_header;
