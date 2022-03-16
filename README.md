@@ -17,6 +17,9 @@ Symfony 6: The Fast Track
   - curl -s -I -X PURGE -u admin:admin `symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL`/admin/http-cache/;
   - curl -s -I -X PURGE -u admin:admin `symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL`/admin/http-cache/conference_header;
 - this command created to display the Git tag name attached to the current Git commit(the output is cached):
-  - $symfony console app:step:info;
+  - $ symfony console app:step:info;
 - compiling the assets via the encore dev command (for development):
   - $ symfony run -d yarn dev --watch
+- the command to clean up rejected comments that are older 7 days:
+  - $ symfony console app:comment:cleanup;
+  - use Cron to schedule this task;
