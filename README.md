@@ -9,6 +9,7 @@ Symfony 6: The Fast Track
 - run mailcatcher:
   - to set in php.ini: sendmail_path = /usr/bin/env catchmail -f admin@example.com;
   - to install mailcatcher or $ sudo docker-compose up -d;
+  - $ mailcatcher;
 - run the phpunit tests:
     - $ make tests;
     - run a test server: $ APP_ENV=test symfony server:start -d;

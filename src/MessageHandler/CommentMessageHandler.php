@@ -12,6 +12,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use App\ImageOptimizer;
 
 class CommentMessageHandler implements MessageHandlerInterface
 {
@@ -21,7 +22,9 @@ class CommentMessageHandler implements MessageHandlerInterface
     private $bus;
     private $workflow;
     private $mailer;
+    private $imagineOptimizer;
     private $adminEmail;
+    private $photoDir;
     private $logger;
 
     public function __construct(
@@ -31,7 +34,9 @@ class CommentMessageHandler implements MessageHandlerInterface
         MessageBusInterface    $bus,
         WorkflowInterface      $commentStateMachine,
         MailerInterface        $mailer,
+        ImageOptimizer         $imageOptimizer,
         string                 $adminEmail,
+        string                 $photoDir,
         LoggerInterface        $logger = null,
     )
     {
@@ -41,7 +46,9 @@ class CommentMessageHandler implements MessageHandlerInterface
         $this->bus = $bus;
         $this->workflow = $commentStateMachine;
         $this->mailer = $mailer;
+        $this->imagineOptimizer = $imageOptimizer;
         $this->adminEmail = $adminEmail;
+        $this->photoDir = $photoDir;
         $this->logger = $logger;
     }
 
@@ -72,6 +79,12 @@ class CommentMessageHandler implements MessageHandlerInterface
                 ->to($this->adminEmail)
                 ->context(['comment' => $comment])
             );
+        } elseif ($this->workflow->can($comment, 'optimize')) {
+            if ($comment->getPhotoFilename()) {
+                $this->imagineOptimizer->resize($this->photoDir.'/'.$comment->getPhotoFilename());
+            }
+            $this->workflow->apply($comment, 'optimize');
+            $this->entityManager->flush();
         } elseif ($this->logger) {
             $this->logger->debug('Dropping comment message', ['comment' => $comment->getId(), 'state' => $comment->getState()]);
         }
