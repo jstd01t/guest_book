@@ -23,3 +23,4 @@ Symfony 6: The Fast Track
 - the command to clean up rejected comments that are older 7 days:
   - $ symfony console app:comment:cleanup;
   - use Cron to schedule this task;
+- the app uses Slack messaging system (secret SLACK_DSN: Qwqeqr121314);
