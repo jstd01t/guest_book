@@ -10,8 +10,6 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
-use Symfony\Bridge\Twig\Mime\NotificationEmail;
-use Symfony\Component\Mailer\MailerInterface;
 use App\ImageOptimizer;
 use App\Notification\CommentReviewNotification;
 use Symfony\Component\Notifier\NotifierInterface;

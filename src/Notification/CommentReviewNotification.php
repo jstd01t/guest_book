@@ -10,22 +10,23 @@ use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
 
 class CommentReviewNotification extends Notification implements EmailNotificationInterface
 {
-    private $comment;
+private $comment;
 
-    public function __construct(Comment $comment)
-    {
-        $this->comment = $comment;
+public function __construct(Comment $comment)
+{
+$this->comment = $comment;
 
-        parent::__constuct('New comment posted');
-    }
+parent::__construct('New comment posted');
+}
 
-    public function asEmailMessage(EmailRecipientInterface $recipient, string $transport = null): ?EmailMessage
-    {
-        $message = EmailMessage::fromNotification() ($this, $recipient, $transport);
-        $message->getMessage()
-            ->htmlTemplate('emails/comment_notification.html.twig')
-            ->context(['comment' => $this->comment]);
-        return $message;
+public function asEmailMessage(EmailRecipientInterface $recipient, string $transport = null): ?EmailMessage
+{
+$message = EmailMessage::fromNotification($this, $recipient, $transport);
+$message->getMessage()
+->htmlTemplate('emails/comment_notification.html.twig')
+->context(['comment' => $this->comment])
+;
 
-    }
+return $message;
+}
 }
