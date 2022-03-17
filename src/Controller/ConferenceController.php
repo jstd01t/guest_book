@@ -16,6 +16,8 @@ use App\Entity\Comment;
 use App\Form\CommentFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
 
 class ConferenceController extends AbstractController
 {
@@ -27,13 +29,13 @@ class ConferenceController extends AbstractController
     {
         $this->twig = $twig;
         $this->entityManager = $entityManager;
-        $this->bus=$bus;
+        $this->bus = $bus;
     }
 
     #[Route('/', name: 'homepage')]
     public function index(ConferenceRepository $conferenceRepository): Response
     {
-        $response =  new Response($this->twig->render('conference/index.html.twig', [
+        $response = new Response($this->twig->render('conference/index.html.twig', [
             'conferences' => $conferenceRepository->findAll(),
         ]));
         $response->setSharedMaxAge(3600);
@@ -44,7 +46,7 @@ class ConferenceController extends AbstractController
     #[Route('/conference_header', name: 'conference_header')]
     public function conferenceHeader(ConferenceRepository $conferenceRepository): Response
     {
-        $response =  new Response($this->twig->render('conference/header.html.twig', [
+        $response = new Response($this->twig->render('conference/header.html.twig', [
             'conferences' => $conferenceRepository->findAll(),
         ]));
         $response->setSharedMaxAge(3600);
@@ -58,6 +60,7 @@ class ConferenceController extends AbstractController
         Conference           $conference,
         CommentRepository    $commentRepository,
         ConferenceRepository $conferenceRepository,
+        NotifierInterface    $notifier,
         string               $photoDir
     ): Response
     {
@@ -88,7 +91,13 @@ class ConferenceController extends AbstractController
 
             $this->bus->dispatch(new CommentMessage($comment->getId(), $context));
 
+            $notifier->send(new Notification('Thank you for the feedback; your comment will be posted after moderation.', ['browser']));
+
             return $this->redirectToRoute('conference', ['slug' => $conference->getSlug()]);
+        }
+
+        if ($form->isSubmitted()) {
+            $notifier->send(new Notification('Can you check your submission? There are some problems with it.', ['browser']));
         }
 
         $offset = max(0, $request->query->getInt('offset', 0));
