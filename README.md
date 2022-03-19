@@ -24,3 +24,11 @@ Symfony 6: The Fast Track
   - $ symfony console app:comment:cleanup;
   - use Cron to schedule this task;
 - the app uses Slack messaging system (secret SLACK_DSN: Qwqeqr121314);
+- mobile app SPA:
+  - $ cd spa/
+  - $ symfony server:start -d --passthru=index.html
+  - $ yarn encore dev
+  - $ symfony open:local
+  - $ API_ENDPOINT=`symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL --dir=..` yarn encore dev
+  - or
+  - $ API_ENDPOINT=`symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL --dir=..` symfony run -d --watch=webpack.config.js yarn encore dev --watch
