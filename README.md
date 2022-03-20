@@ -32,3 +32,15 @@ Symfony 6: The Fast Track
   - $ API_ENDPOINT=`symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL --dir=..` yarn encore dev
   - or
   - $ API_ENDPOINT=`symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL --dir=..` symfony run -d --watch=webpack.config.js yarn encore dev --watch
+- Blackfire:
+  - install: $ curl https://installer.blackfire.io/installer.sh | bash
+  - install: $ sudo blackfire php:install
+  - restart symfony server
+  - configure Blackfire CLI Tool with a personal client credentials:
+    $ blackfire client:config --client-id=xxx --client-token=xxx
+  - configure server:
+    $ symfony console secrets:set BLACKFIRE_SERVER_ID
+    $ symfony console secrets:set BLACKFIRE_SERVER_TOKEN
+  - restart symfony server
+  - run the scenario in development:
+  - $ ./blackfire-player.phar run --endpoint=`symfony var:export SYMFONY_PROJECT_DEFAULT_ROUTE_URL` .blackfire.yaml --variable "webmail_url=`symfony var:export MAILER_WEB_URL 2>/dev/null`" --variable="env=dev" -vv
